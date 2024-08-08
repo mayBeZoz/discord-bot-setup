@@ -2,7 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 const commandsDirectoryPath = path.join(__dirname, '../../commands')
+
 module.exports = function (clientInstance) {
+
     const commandsFiles = fs.readdirSync(commandsDirectoryPath);
     
     commandsFiles.forEach((file) => {
@@ -20,4 +22,5 @@ module.exports = function (clientInstance) {
             }
         }
     });
+   
 }
