@@ -5,7 +5,7 @@ const registerCommands = require("./core/infrastructure/register-commands")
 const client = new Client({intents:[GatewayIntentBits.Guilds]})
 
 client.commands = new Collection()
-registerCommands()
+registerCommands(client)
 
 client.once(Events.ClientReady, (readyClient) => {
     console.log(readyClient.user)
