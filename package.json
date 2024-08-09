@@ -8,6 +8,7 @@
         "dev": "nodemon index.js"
     },
     "devDependencies": {
+        "@types/node": "^22.1.0",
         "eslint": "^9.8.0"
     }
 }
