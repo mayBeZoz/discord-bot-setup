@@ -1,6 +1,6 @@
 const { Events , Collection } = require('discord.js');
 
-const isUserOnCooldown = async (interaction) => {
+const checkUserCooldown = async (interaction) => {
     const command = interaction.client.commands.get(interaction.commandName);
 
     const { cooldowns } = interaction.client;
@@ -19,14 +19,12 @@ const isUserOnCooldown = async (interaction) => {
 
         if (now < expirationTime) {
             const expiredTimestamp = Math.round(expirationTime / 1_000);
-            interaction.reply({ content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expiredTimestamp}:R>.`, ephemeral: true });
-            return true
+            return interaction.reply({ content: `Please wait, you are on a cooldown for \`${command.data.name}\`. You can use it again <t:${expiredTimestamp}:R>.`, ephemeral: true });
+
         }
     }
     timestamps.set(interaction.user.id, now);
     setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
-    
-    return false
 }
 
 module.exports = function (clientInstance) {
@@ -41,10 +39,8 @@ module.exports = function (clientInstance) {
         }
     
         try {
-            const isOnCooldown = await isUserOnCooldown(interaction)
-            if (!isOnCooldown) {
-                await command.execute(interaction);
-            }
+            await checkUserCooldown(interaction)
+            await command.execute(interaction);
         } catch (error) {
             console.log(`ERROR ON EXECUTING COMMAND EXECUTE METHOD \n ${error}`);
             if (interaction.replied || interaction.deferred) {
